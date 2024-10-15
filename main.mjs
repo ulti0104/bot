@@ -1,4 +1,4 @@
-import fs from "fs";
+mport fs from "fs";
 import path from "path";
 import express from "express";
 import { Client, Collection, Events, GatewayIntentBits, ActivityType, EmbedBuilder } from "discord.js";

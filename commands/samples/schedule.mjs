@@ -25,5 +25,5 @@ export const data = new SlashCommandBuilder()
   .setDescription('うるティが返事してくれるよ');
 
 export async function execute(interaction){
-	await interaction.reply(dateStrHyphen);
+  await interaction.reply(dateStrHyphen);
 }

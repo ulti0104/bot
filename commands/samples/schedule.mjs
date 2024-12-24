@@ -80,9 +80,11 @@ client.on('messageCreate', message => {
     if (message.author.bot) return;
     if (message.content.includes('日程入力')) {
         message.channel.send(jpDateStr);
-        message.channel.send(jpDateStr);
-        message.channel.send(jpDateStr);
-        message.channel.send(jpDateStr);
-      
+        message.channel.send(jpDateStr1);
+        message.channel.send(jpDateStr2);
+        message.channel.send(jpDateStr3);
+        message.channel.send(jpDateStr4);
+        message.channel.send(jpDateStr5);
+        message.channel.send(jpDateStr6);
     }
 });

@@ -1,7 +1,7 @@
 import { SlashCommandBuilder } from 'discord.js';
 
 export const data = new SlashCommandBuilder()
-  .setName('nyan')
+  .setName('arinsu')
   .setDescription('うるティが返事してくれるよ');
 
 export async function execute(interaction){

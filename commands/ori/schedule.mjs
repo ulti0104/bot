@@ -27,14 +27,14 @@ var todayString6 = now.getFullYear() + '年' + (now.getMonth() + 1) + '月' + no
 
 
 export async function execute(interaction){
-	await interaction.reply(todayString);
-  await interaction.followUp(todayString1);
-  await interaction.followUp(todayString2);
-  await interaction.followUp(todayString3);
-  await interaction.followUp(todayString4);
-  await interaction.followUp(todayString5);
-  await interaction.followUp(todayString6);
+	await interaction.channel.send(todayString);
+  await interaction.react("⭕");
+  await interaction.channel.send(todayString1);
+  await interaction.channel.send(todayString2);
+  await interaction.channel.send(todayString3);
+  await interaction.channel.send(todayString4);
+  await interaction.channel.send(todayString5);
+  await interaction.channel.send(todayString6);
   
-  await message.channel.send("こんにちは！Discord Botです。");
   
 }

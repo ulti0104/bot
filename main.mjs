@@ -81,7 +81,7 @@ client.on("voiceStateUpdate", async (oldState, newState) => {
 });
 
 client.on("messageCreate", async (message) => {
-  if (message.author.id == client.user.id || message.author.bot) return;
+  
   await handlers.get("messageCreate").default(message);
 });
 

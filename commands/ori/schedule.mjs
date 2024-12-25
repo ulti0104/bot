@@ -21,8 +21,6 @@ now.setDate(now.getDate() + 1);
 var todayString5 = now.getFullYear() + '年' + (now.getMonth() + 1) + '月' + now.getDate() + '日'
 now.setDate(now.getDate() + 1);
 var todayString6 = now.getFullYear() + '年' + (now.getMonth() + 1) + '月' + now.getDate() + '日'
-now.setDate(now.getDate() + 1);
-var todayString6 = now.getFullYear() + '年' + (now.getMonth() + 1) + '月' + now.getDate() + '日'
 
 
 

@@ -28,7 +28,6 @@ var todayString6 = now.getFullYear() + '年' + (now.getMonth() + 1) + '月' + no
 
 export async function execute(interaction){
 	await interaction.channel.send(todayString);
-  await interaction.react("⭕");
   await interaction.channel.send(todayString1);
   await interaction.channel.send(todayString2);
   await interaction.channel.send(todayString3);

@@ -1,9 +1,7 @@
 export default async(message) => {
-  if (message.content.match(/年|月/)) {
-    
-////
-    
-  var now = new Date();
+  
+  
+var now = new Date();
 
 // 本日を取得する.
 var todayString = now.getFullYear() + '年' + (now.getMonth() + 1) + '月' + now.getDate() + '日'
@@ -22,8 +20,10 @@ now.setDate(now.getDate() + 1);
 var todayString6 = now.getFullYear() + '年' + (now.getMonth() + 1) + '月' + now.getDate() + '日'
 now.setDate(now.getDate() + 1);
 var todayString6 = now.getFullYear() + '年' + (now.getMonth() + 1) + '月' + now.getDate() + '日'
-    
-////
+  
+  
+  
+  if (message.content.match(/日付|日程/)) {
     
     await message.channel.send(todayString);
     await message.channel.send(todayString1);

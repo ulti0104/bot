@@ -5,5 +5,5 @@ export const data = new SlashCommandBuilder()
   .setDescription('うるティが返事してくれるよ');
 
 export async function execute(interaction){
-	await interaction.reply('ありんす');
+	await interaction.reply('ありんす💙');
 }

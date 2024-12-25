@@ -34,4 +34,7 @@ export async function execute(interaction){
   await interaction.followUp(todayString4);
   await interaction.followUp(todayString5);
   await interaction.followUp(todayString6);
+  
+  await message.channel.send("こんにちは！Discord Botです。");
+  
 }

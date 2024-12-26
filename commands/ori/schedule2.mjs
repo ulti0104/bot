@@ -7,7 +7,7 @@ export const data = new SlashCommandBuilder()
 var now = new Date();
 now.setHours(now.getHours() + 9);
 
-var arr = ["(日)", "(月)", "(火)", "(水)", "(木)",, "(金)", "(土)"]
+var arr = ["(日)", "(月)", "(火)", "(水)", "(木)", "(金)" , "(土)"]
 
 
 
@@ -18,16 +18,33 @@ var youbi=arr[youbi];
 var todayString = now.getFullYear() + '年' + (now.getMonth() + 1) + '月' + now.getDate() + '日' + youbi
 
 now.setDate(now.getDate() + 1);
+var youbi=now.getDay()
+var youbi=arr[youbi];
 var todayString1 = now.getFullYear() + '年' + (now.getMonth() + 1) + '月' + now.getDate() + '日' + youbi
+
 now.setDate(now.getDate() + 1);
+var youbi=now.getDay()
+var youbi=arr[youbi];
 var todayString2 = now.getFullYear() + '年' + (now.getMonth() + 1) + '月' + now.getDate() + '日' + youbi
+
 now.setDate(now.getDate() + 1);
+var youbi=now.getDay()
+var youbi=arr[youbi];
 var todayString3 = now.getFullYear() + '年' + (now.getMonth() + 1) + '月' + now.getDate() + '日' + youbi
+
 now.setDate(now.getDate() + 1);
+var youbi=now.getDay()
+var youbi=arr[youbi];
 var todayString4 = now.getFullYear() + '年' + (now.getMonth() + 1) + '月' + now.getDate() + '日' + youbi
+
 now.setDate(now.getDate() + 1);
+var youbi=now.getDay()
+var youbi=arr[youbi];
 var todayString5 = now.getFullYear() + '年' + (now.getMonth() + 1) + '月' + now.getDate() + '日' + youbi
+
 now.setDate(now.getDate() + 1);
+var youbi=now.getDay()
+var youbi=arr[youbi];
 var todayString6 = now.getFullYear() + '年' + (now.getMonth() + 1) + '月' + now.getDate() + '日' + youbi
 
 

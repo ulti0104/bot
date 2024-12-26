@@ -6,5 +6,15 @@ export default async(message) => {
     await message.react("🔺");
     
   }
+  
+  
+  if (message.content.match(/Happy Birthday|𝐻𝑎𝑝𝑝𝑦 𝑏𝑖𝑟𝑡ℎ𝑑𝑎𝑦/)) {
+    
+    await message.channel.send("はっぴーばーすでー");
+    
+  }
+  
 
+  
+  
 };

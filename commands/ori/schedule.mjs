@@ -5,6 +5,7 @@ export const data = new SlashCommandBuilder()
   .setDescription('日付入力');
 
 var now = new Date();
+now.setHours(now.getHours() + 9);
 
 // 本日を取得する.
 var todayString = now.getFullYear() + '年' + (now.getMonth() + 1) + '月' + now.getDate() + '日'

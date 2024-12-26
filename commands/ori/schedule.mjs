@@ -1,8 +1,8 @@
 import { SlashCommandBuilder } from 'discord.js';
 
 export const data = new SlashCommandBuilder()
-  .setName('schedule')
-  .setDescription('日付入力');
+  .setName('schedule-today')
+  .setDescription('今日の日付から入力');
 
 var now = new Date();
 now.setHours(now.getHours() + 9);

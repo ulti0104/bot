@@ -7,6 +7,15 @@ export default async(message) => {
     
   }
   
+var naiyo=message.content
+  
+  if (message.content.match(/💢|ぶちのめす/)) {
+    
+    await message.rply(naiyo);
+    
+  }
+  
+  
   
   if (message.content.match(/Happy Birthday|𝐻𝑎𝑝𝑝𝑦 𝑏𝑖𝑟𝑡ℎ𝑑𝑎𝑦/)) {
     

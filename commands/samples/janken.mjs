@@ -36,7 +36,7 @@ export async function execute(interaction) {
   });
 
   try {
-    const result = ["(あいこ)", "あなたの勝ち～", "うるティの勝ち～"];
+    const result = ["(あいこ)", "あなたの勝ち～", "うるティの勝ち～!!!"];
     const collectorFilter = (i) => i.user.id === interaction.user.id;
 
     let confirmation = await response.awaitMessageComponent({

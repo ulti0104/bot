@@ -11,7 +11,7 @@ var naiyo=message.content
   
   if (message.content.match(/💢|ぶちのめす/)) {
     
-    await message.channel.send("お怒りでありんす");
+    await message.channel.send("お怒りでありんす！");
     
   }
   

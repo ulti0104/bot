@@ -9,7 +9,6 @@ export async function execute(interaction){
   
 	await interaction.channel.send('ありんす💙');
   
-  
 }
 
 

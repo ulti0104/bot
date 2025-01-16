@@ -12,7 +12,7 @@ var arr = ["(日)", "(月)", "(火)", "(水)", "(木)", "(金)" , "(土)"]
 
 
 
-now.setDate(now.getDate() + 5);
+now.setDate(now.getDate() + 1);
 var youbi=now.getDay()
 var youbi=arr[youbi];
 var todayString = now.getFullYear() + '年' + (now.getMonth() + 1) + '月' + now.getDate() + '日' + youbi

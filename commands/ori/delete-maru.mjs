@@ -5,8 +5,8 @@ export const data = new SlashCommandBuilder()
   .setDescription('うるティのまるを消す');
 
 
-export async function execute(interaction){
+export async function execute(message){
   
-	await message.reactions.cache.get('🤔').users.remove(user)
+	await message.reactions.cache.get('⭕').users.remove(1320916943141736488)
   
 }

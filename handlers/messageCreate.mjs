@@ -7,7 +7,7 @@ export default async(message) => {
     
   }
   
-var naiyo=message.content
+
   
   if (message.content.match(/💢|ぶちのめす/)) {
     

@@ -24,5 +24,5 @@ export async function execute(interaction) {
     }
   }
 
-  await interaction.reply(`うるティから始める山手線ゲーム\nいぇーーーーい！\nお題は　${result} ！`);
+  await interaction.channel.send(`うるティから始める山手線ゲーム\nいぇーーーーい！\nお題は　${result} ！`);
 }

@@ -2,7 +2,7 @@ import { SlashCommandBuilder } from 'discord.js';
 
 export const data = new SlashCommandBuilder()
   .setName('delete-maru')
-  .setDescription('うるティのまるを消す');
+  .setDescription('うるティのまるを消す（調整中）');
 
 
 export async function execute(message){

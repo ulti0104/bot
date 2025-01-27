@@ -5,8 +5,8 @@ export const data = new SlashCommandBuilder()
   .setDescription("ガチャを引くよ～");
 
 export async function execute(interaction) {
-  const arr = ["UR ダイヤモンドのうるティ", "SSR 金のうるティ", "SR 銀のうるティ", "R 銅のうるティ", "N ただのうるティ"];
-  const weight = [2, 8, 15, 30, 45];
+  const arr = ["GOD 愛しのぺーたん", "UR ダイヤモンドのうるティ", "SSR 金のうるティ", "SR 銀のうるティ", "R 銅のうるティ", "N ただのうるティ"];
+  const weight = [0.1, 1, 8, 16, 30, 45];
   let result = "";
 
   let totalWeight = 0;

@@ -2,7 +2,7 @@ import { SlashCommandBuilder, PermissionsBitField } from "discord.js";
 
 export const data = new SlashCommandBuilder()
   .setName('talk') // コマンド名
-  .setDescription('管理者権限が必要') // コマンドの説明
+  .setDescription('管理者権限が必要-うるティが任意メッセージを発言') // コマンドの説明
   
 
   .addStringOption(option => 

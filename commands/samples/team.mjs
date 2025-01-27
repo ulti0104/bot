@@ -2,7 +2,7 @@ import { SlashCommandBuilder } from "discord.js";
 
 export const data = new SlashCommandBuilder()
   .setName("sans-or-oceans")
-  .setDescription("チームを決める");
+  .setDescription("サンズかオーシャンズか");
 
 export async function execute(interaction) {
   const arr = ["サンズ", "オーシャンズ"];

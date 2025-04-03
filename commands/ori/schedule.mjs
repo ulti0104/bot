@@ -55,6 +55,6 @@ export async function execute(interaction){
   await interaction.channel.send(todayString5);
   await interaction.channel.send(todayString6);
   await interaction.channel.send('@everyone \n交流戦日程⭕❌してほしいでありんす');
-  
+  await interaction.channel.send('@まてぃまてぃうぉううぉティ');
   
 }

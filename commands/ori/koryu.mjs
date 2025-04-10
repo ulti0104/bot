@@ -33,10 +33,10 @@ export async function exastringecute(interaction) {
   const aitestring = interaction.options.getString('aite'); // お相手
   //var astring = ('22:00～ \nルール \n試合数 \n試合ステージ \nランダム \nサンズ'); // 送信するメッセージ
   //var bstring = ('様 \nオーシャンズ ありんす \nルームID 1414　\n回線落ちはごめんスタンプでタスキル'); // 送信するメッセージ
-  const astring = ('22:00～'); // 送信するメッセージ
+ // const astring = ('22:00～'); // 送信するメッセージ
   
   //await interaction.channel.send('月日（）  ');
-  await interaction.channel.send(astring);
+  await interaction.channel.send(aitestring);
   
 
 }

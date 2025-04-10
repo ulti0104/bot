@@ -9,10 +9,23 @@ export const data = new SlashCommandBuilder()
     option.setName('message')
       .setDescription('メッセージ')
       .setRequired(true)
+    option.setName('shiai')
+      .setDescription('メッセージ')
+      .setRequired(true)
                    
-             
                    
   );
+
+
+var now = new Date();
+now.setHours(now.getHours() + 9);
+var arr = ["(日)", "(月)", "(火)", "(水)", "(木)", "(金)" , "(土)"]
+// 本日を取得する.
+var youbi=now.getDay()
+var youbi=arr[youbi];
+var todayString = now.getFullYear() + '年' + (now.getMonth() + 1) + '月' + now.getDate() + '日' + youbi                   
+              
+
 
 export async function execute(interaction) {
   
@@ -21,9 +34,10 @@ export async function execute(interaction) {
   
   
   const messageContent = interaction.options.getString('message'); // 送信するメッセージ
-  const astring = ('22:00～'); // 送信するメッセージ
+  const astring = ('22:00～ \nルール \n試合数 \n試合ステージ \nランダム \nサンズ'); // 送信するメッセージ
+  const bstring = ('様 \nオーシャンズ ありんす \nルームID 1414　\n回線落ちはごめんスタンプでタスキル'); // 送信するメッセージ
   
-  await interaction.channel.send(messageContent+astring);
+  await interaction.channel.send(todayString+astring+messageContent+bstring);
   
 
 }

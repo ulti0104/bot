@@ -12,8 +12,10 @@ export const data = new SlashCommandBuilder()
                    
   .addStringOption(option => 
     option.setName('shiai')
-      .setDescription('し')
+      .setDescription('試合数')
       .setRequired(true)
+      .addChoice('Japanese', 'ja')
+      .addChoice('English', 'en')
                    
              
                    

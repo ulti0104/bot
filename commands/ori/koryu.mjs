@@ -8,18 +8,17 @@ export const data = new SlashCommandBuilder()
   .addStringOption(option => 
     option.setName('aite')
       .setDescription('お相手の名前')
-      .setRequired(true)
+      .setRequired(true)      
                    
+ 
+
   .addStringOption(option => 
     option.setName('shiai')
       .setDescription('試合数')
       .setRequired(true)
-      .addChoice('Japanese', 'ja')
-      .addChoice('English', 'en')
                    
-             
-                   
-  );
+ ) );
+
 
 export async function execute(interaction) {
   

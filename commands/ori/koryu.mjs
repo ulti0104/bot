@@ -9,25 +9,33 @@ export const data = new SlashCommandBuilder()
     option.setName('aite')
       .setDescription('お相手の名前')
       .setRequired(true)      
+
                    
- 
-
-  .addStringOption(option => 
-    option.setName('shiai')
-      .setDescription('試合数')
-      .setRequired(true)
-                   
- ) );
+ );
 
 
-export async function execute(interaction) {
+
+var now = new Date();
+now.setHours(now.getHours() + 9);
+var arr = ["(日)", "(月)", "(火)", "(水)", "(木)", "(金)" , "(土)"]
+// 本日を取得する.
+var youbi=now.getDay()
+var youbi=arr[youbi];
+var todayString = now.getFullYear() + '年' + (now.getMonth() + 1) + '月' + now.getDate() + '日' + youbi
+
+
+
+
+export async function exastringecute(interaction) {
   
 
   
-  const aitestring = interaction.options.getString('aite'); // 送信するメッセージ
-  const sanz = ('サンズ'); // 送信するメッセージ
+  const aitestring = interaction.options.getString('aite'); // お相手
+  const astring = (':~\nルール \n試合数 \n試合ステージ \nランダム \nサンズ'); // 送信するメッセージ
+  const bstring = (':~\nルール \n試合数 \n試合ステージ \nランダム \nサンズ'); // 送信するメッセージ
   
-  //await interaction.channel.send('月日（）:~\nルール \n試合数 \n試合ステージ \nランダムサンズ  様 \nオーシャンズ ありんす \nルームID 1414　\n　回線落ちはごめんスタンプでタスキル');
+  
+  //await interaction.channel.send('月日（）  様 \nオーシャンズ ありんす \nルームID 1414　\n　回線落ちはごめんスタンプでタスキル');
   await interaction.channel.send(sanz + aitestring);
   
 

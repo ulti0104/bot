@@ -7,12 +7,9 @@ export const data = new SlashCommandBuilder()
 
   .addStringOption(option => 
     option.setName('message')
-      .setDescription('メッセージ')
+      .setDescription('お相手の名前')
       .setRequired(true)
-    option.setName('shiai')
-      .setDescription('メッセージ')
-      .setRequired(true)
-                   
+              
                    
   );
 
@@ -30,12 +27,12 @@ var todayString = now.getFullYear() + '年' + (now.getMonth() + 1) + '月' + now
 export async function execute(interaction) {
   
 
-    
+
   
   
-  const messageContent = interaction.options.getString('message'); // 送信するメッセージ
-  const astring = ('22:00～ \nルール \n試合数 \n試合ステージ \nランダム \nサンズ'); // 送信するメッセージ
-  const bstring = ('様 \nオーシャンズ ありんす \nルームID 1414　\n回線落ちはごめんスタンプでタスキル'); // 送信するメッセージ
+  const messageContent = interaction.options.getString('message'); // お相手
+  const astring = ('22:00～ \nルール CSルール \n試合数 5 \n試合ステージ ランダム \nサンズ'); // 送信するメッセージ
+  const bstring = (' 様 \nオーシャンズ ありんす \nルーム作成　ありんす \nルームID 1414　\n回線落ちはごめんスタンプでタスキル'); // 送信するメッセージ
   
   await interaction.channel.send(todayString+astring+messageContent+bstring);
   

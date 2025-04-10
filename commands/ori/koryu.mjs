@@ -10,6 +10,11 @@ export const data = new SlashCommandBuilder()
       .setDescription('お相手の名前')
       .setRequired(true)
                    
+  .addStringOption(option => 
+    option.setName('shiai')
+      .setDescription('し')
+      .setRequired(true)
+                   
              
                    
   );
@@ -18,10 +23,11 @@ export async function execute(interaction) {
   
 
   
-  const messageContent = interaction.options.getString('aite'); // 送信するメッセージ
-
+  const aitestring = interaction.options.getString('aite'); // 送信するメッセージ
+  const sanz = ('サンズ'); // 送信するメッセージ
   
-  await interaction.channel.send('月日（）:~ルール 試合数 試合ステージ   ランダムサンズ  様オーシャンズ ありんすID 1414ルーム作成 1414回線落ちはごめんスタンプでタスキル');
+  //await interaction.channel.send('月日（）:~\nルール \n試合数 \n試合ステージ \nランダムサンズ  様 \nオーシャンズ ありんす \nルームID 1414　\n　回線落ちはごめんスタンプでタスキル');
+  await interaction.channel.send(sanz + aitestring);
   
 
 }

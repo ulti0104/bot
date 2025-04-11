@@ -17,7 +17,7 @@ export const data = new SlashCommandBuilder()
     )
 
 
-  .addStringOption(option => 
+  .addNumberOption(option => 
     option.setName('nisuu')
       .setDescription('何日入力する？')
       .setRequired(true)
@@ -42,7 +42,7 @@ now.setHours(now.getHours() + 9);
 var arr = ["(日)", "(月)", "(火)", "(水)", "(木)", "(金)" , "(土)"]
 
 
-// 本日を取得する.
+// 本日を取得する
 var youbi=now.getDay()
 var youbi=arr[youbi];
 var todayString = now.getFullYear() + '年' + (now.getMonth() + 1) + '月' + now.getDate() + '日' + youbi
@@ -56,20 +56,25 @@ var todayString = now.getFullYear() + '年' + (now.getMonth() + 1) + '月' + now
 await interaction.channel.send(todayString);
   
   
-  for (let i = 1;  i < niti; i+1){
+for (let i = 1;  i < niti; i+1){
 
-    
+  
+
   now.setDate(now.getDate() + i);
   var youbi=now.getDay()
   var youbi=arr[youbi];
   var todayString = now.getFullYear() + '年' + (now.getMonth() + 1) + '月' + now.getDate() + '日' + youbi
   await interaction.channel.send(todayString);
-      
+  
+  
     
 }
+
   
 	await interaction.channel.send('@everyone \n交流戦日程⭕❌してほしいでありんす');
   await interaction.channel.send('<@1173137348968595579>');
   await interaction.channel.send('<@1108423516572881006>'); 
+
+  
   
 }

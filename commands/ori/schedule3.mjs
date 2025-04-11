@@ -56,16 +56,15 @@ var todayString = now.getFullYear() + '年' + (now.getMonth() + 1) + '月' + now
 await interaction.channel.send(todayString);
   
   
-  for (let i = 1;  i < niti; i++){
+  for (let i = 1;  i < niti; i+1){
 
-  
+    
   now.setDate(now.getDate() + i);
   var youbi=now.getDay()
   var youbi=arr[youbi];
   var todayString = now.getFullYear() + '年' + (now.getMonth() + 1) + '月' + now.getDate() + '日' + youbi
   await interaction.channel.send(todayString);
-  
-    
+      
     
 }
   

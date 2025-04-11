@@ -6,15 +6,15 @@ export const data = new SlashCommandBuilder()
   
 
   
-  .addStringOption(option => 
-    option.setName('startday')
-      .setDescription('開始日')
-      .setRequired(true)
-      .addChoices(
-                {name:'今日', value:'0'},
-              	{name:'明日', value:'1'}
-              )
-    )
+//  .addStringOption(option => 
+//    option.setName('startday')
+//      .setDescription('開始日')
+//      .setRequired(true)
+//      .addChoices(
+//                {name:'今日', value:'0'},
+//              	{name:'明日', value:'1'}
+//              )
+//    )
 
 
   .addStringOption(option => 
@@ -33,8 +33,8 @@ export async function execute(interaction){
   
   
   
-const stday = interaction.options.getString('startday'); // 開始日
-const niti = interaction.options.getNumber('days'); // 日数
+//const stday = interaction.options.getString('startday'); // 開始日
+const niti = interaction.options.getString('days'); // 日数
 
 var now = new Date();
 now.setHours(now.getHours() + 9);
@@ -48,7 +48,7 @@ var youbi=arr[youbi];
 var todayString = now.getFullYear() + '年' + (now.getMonth() + 1) + '月' + now.getDate() + '日' + youbi
 
 
-now.setDate(now.getDate() + stday);
+now.setDate(now.getDate());
 var youbi=now.getDay()
 var youbi=arr[youbi];
 var todayString = now.getFullYear() + '年' + (now.getMonth() + 1) + '月' + now.getDate() + '日' + youbi
@@ -56,7 +56,7 @@ var todayString = now.getFullYear() + '年' + (now.getMonth() + 1) + '月' + now
 await interaction.channel.send(todayString);
   
   
-for (let i = 1;  i > niti; i++){
+for (let i = 1;  i < niti; i++){
 
   
 

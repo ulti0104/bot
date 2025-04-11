@@ -4,15 +4,10 @@ export const data = new SlashCommandBuilder()
   .setName('test') // コマンド名
   .setDescription('交流戦-詳細テンプレ') // コマンドの説明
   
-
-  .addStringOption(option => 
+  .addNumberOption(option => 
     option.setName('message')
       .setDescription('お相手の名前')
       .setRequired(true)
-      .addChoices(
-              	{name:'Japanese', value:'ja'},
-              	{name:'English', value:'en'}
-              )
 
                                  
   );

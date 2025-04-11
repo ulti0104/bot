@@ -22,6 +22,19 @@ export const data = new SlashCommandBuilder()
                 {name:'23:00', value:'23:00～'},
                 {name:'23:30', value:'23:30～'}
               )
+    )
+                   
+    .addStringOption(option => 
+    option.setName('numbermatch')
+      .setDescription('試合数')
+      .setRequired(true)
+      .addChoices(
+                {name:'3', value:'3'},
+              	{name:'4', value:'4'},
+              	{name:'5', value:'5'},
+                {name:'6', value:'6'},
+                {name:'7', value:'7'}
+              )
                                  
   );
 
@@ -44,6 +57,7 @@ export async function execute(interaction) {
   
   const messageContent = interaction.options.getString('message'); // お相手
   const kaisi = interaction.options.getString('starttime'); // 時間
+  const shiai = interaction.options.getString('numbermatch'); // 試合数
   const astring = (' \nルール＝CSルール \n試合数＝5 \n試合ステージ＝ランダム \nサンズ　'); // 送信するメッセージ
   const bstring = (' 様 \nオーシャンズ　ありんす \nルーム作成　ありんす \nルームID 1414　\n回線落ちはごめんスタンプでタスキル'); // 送信するメッセージ
   

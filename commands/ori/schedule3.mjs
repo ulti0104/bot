@@ -47,21 +47,30 @@ var youbi=now.getDay()
 var youbi=arr[youbi];
 var todayString = now.getFullYear() + '年' + (now.getMonth() + 1) + '月' + now.getDate() + '日' + youbi
 
+
 now.setDate(now.getDate() + stday);
 var youbi=now.getDay()
 var youbi=arr[youbi];
 var todayString = now.getFullYear() + '年' + (now.getMonth() + 1) + '月' + now.getDate() + '日' + youbi
 
+await interaction.channel.send(todayString);
   
   
-  for (let i = 1; i = 3; i++){
-  console.log("i = " + i);
+  for (let i = 1;  i < niti; i++){
+
+  
+  now.setDate(now.getDate() + i);
+  var youbi=now.getDay()
+  var youbi=arr[youbi];
+  var todayString = now.getFullYear() + '年' + (now.getMonth() + 1) + '月' + now.getDate() + '日' + youbi
+  await interaction.channel.send(todayString);
+  
+    
+    
 }
   
-	await interaction.channel.send(todayString);
-  
-  await interaction.channel.send('@everyone \n交流戦日程⭕❌してほしいでありんす');
+	await interaction.channel.send('@everyone \n交流戦日程⭕❌してほしいでありんす');
   await interaction.channel.send('<@1173137348968595579>');
-  await interaction.channel.send('<@1108423516572881006>');
+  await interaction.channel.send('<@1108423516572881006>'); 
   
 }

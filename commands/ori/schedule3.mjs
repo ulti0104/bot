@@ -34,7 +34,7 @@ export async function execute(interaction){
   
   
 const stday = interaction.options.getString('startday'); // 開始日
-const niti = interaction.options.getString('nisuu'); // 日数
+const niti = interaction.options.getNumber('nisuu'); // 日数
 
 var now = new Date();
 now.setHours(now.getHours() + 9);

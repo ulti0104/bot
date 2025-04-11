@@ -4,7 +4,11 @@ export const data = new SlashCommandBuilder()
   .setName('schedule-any')
   .setDescription('任意の日付から任意の日数入力');
 
-
+.addStringOption(option => 
+    option.setName('message')
+      .setDescription('お相手の名前')
+      .setRequired(true)
+                 
 
 
 var now = new Date();

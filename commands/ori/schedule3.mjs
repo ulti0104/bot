@@ -2,14 +2,27 @@ import { SlashCommandBuilder } from 'discord.js';
 
 export const data = new SlashCommandBuilder()
   .setName('schedule-any')
-  .setDescription('任意の日付から任意の日数入力');
+  .setDescription('任意の日付から任意の日数入力')
+  
 
-.addStringOption(option => 
-    option.setName('message')
-      .setDescription('お相手の名前')
+  
+  .addStringOption(option => 
+    option.setName('startday')
+      .setDescription('開始日')
+      .setRequired(true)
+      .addChoices(
+                {name:'今日', value:'0'},
+              	{name:'明日', value:'1'}
+              )
+    )
+
+
+  .addStringOption(option => 
+    option.setName('nisuu')
+      .setDescription('何日入力する？')
       .setRequired(true)
                  
-
+);
 
 var now = new Date();
 now.setHours(now.getHours() + 9);
@@ -21,6 +34,10 @@ var arr = ["(日)", "(月)", "(火)", "(水)", "(木)", "(金)" , "(土)"]
 var youbi=now.getDay()
 var youbi=arr[youbi];
 var todayString = now.getFullYear() + '年' + (now.getMonth() + 1) + '月' + now.getDate() + '日' + youbi
+
+
+if 
+
 
 now.setDate(now.getDate() + 1);
 var youbi=now.getDay()

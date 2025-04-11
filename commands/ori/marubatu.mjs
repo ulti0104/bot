@@ -7,6 +7,6 @@ export const data = new SlashCommandBuilder()
 
 export async function execute(interaction){
   
-	await interaction.channel.send('交流戦日程⭕❌つけてないひと！\n早くつけてくれないと\n頭カチ割に行くでありんす！(怒)');
+	await interaction.channel.send('交流戦日程⭕❌つけてない人\n頭カチ割に行きます！(怒)');
   
 }

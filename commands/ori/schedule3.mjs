@@ -2,7 +2,7 @@ import { SlashCommandBuilder } from 'discord.js';
 
 export const data = new SlashCommandBuilder()
   .setName('schedule-any')
-  .setDescription('任意の日付から任意の日数入力')
+  .setDescription('今日の日付から任意の日数入力')
   
 
   
@@ -60,7 +60,7 @@ for (let i = 1;  i < niti; i++){
 
   
 
-  now.setDate(now.getDate() + i);
+  now.setDate(now.getDate() + 1);
   var youbi=now.getDay()
   var youbi=arr[youbi];
   var todayString = now.getFullYear() + '年' + (now.getMonth() + 1) + '月' + now.getDate() + '日' + youbi

@@ -17,7 +17,7 @@ export const data = new SlashCommandBuilder()
     )
 
 
-  .addNumberOption(option => 
+  .addStringOption(option => 
     option.setName('days')
       .setDescription('何日入力する？')
       .setRequired(true)
@@ -56,7 +56,7 @@ var todayString = now.getFullYear() + '年' + (now.getMonth() + 1) + '月' + now
 await interaction.channel.send(todayString);
   
   
-for (let i = 1;  i < niti; i+1){
+for (let i = 1;  i > niti; i++){
 
   
 

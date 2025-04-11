@@ -58,10 +58,11 @@ export async function execute(interaction) {
   const messageContent = interaction.options.getString('message'); // お相手
   const kaisi = interaction.options.getString('starttime'); // 時間
   const shiai = interaction.options.getString('numbermatch'); // 試合数
-  const astring = (' \nルール＝CSルール \n試合数＝5 \n試合ステージ＝ランダム \nサンズ　'); // 送信するメッセージ
+  const astring = (' \nルール＝CSルール \n試合数＝');
+  const a2string = (' \n試合ステージ＝ランダム \nサンズ　'); // 送信するメッセージ
   const bstring = (' 様 \nオーシャンズ　ありんす \nルーム作成　ありんす \nルームID 1414　\n回線落ちはごめんスタンプでタスキル'); // 送信するメッセージ
   
-  await interaction.channel.send(todayString+kaisi+astring+messageContent+bstring);
+  await interaction.channel.send(todayString+kaisi+astring+shiai+a2string+messageContent+bstring);
   
 
 }

@@ -2,7 +2,7 @@ import { SlashCommandBuilder, PermissionsBitField } from "discord.js";
 
 export const data = new SlashCommandBuilder()
   .setName('test') // コマンド名
-  .setDescription('交流戦-詳細テンプレ') // コマンドの説明
+  .setDescription('テスト') // コマンドの説明
   
   .addNumberOption(option => 
     option.setName('message')

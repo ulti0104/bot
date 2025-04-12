@@ -4,6 +4,7 @@ export default async(message) => {
     await message.react("⭕");
     await message.react("❌");
     await message.react("🔺");
+    await message.react("❓");
     
   }
   

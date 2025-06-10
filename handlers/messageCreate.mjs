@@ -33,7 +33,7 @@ export default async(message) => {
   
 
   
-  if (message.content.match(/はぴば|𝐻𝑎𝑝𝑝𝑦 𝑏𝑖𝑟𝑡ℎ𝑑𝑎𝑦/)) {
+  if (message.content.match(/はぴば|誕生日おめでとう/)) {
     
     await message.channel.send("はっぴーばーすでー");
     

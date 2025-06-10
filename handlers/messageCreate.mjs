@@ -17,6 +17,13 @@ export default async(message) => {
   }
   
   
+   if (message.content.match(/足臭|あしくさ/)) {
+    
+    await message.reply("じょ！");
+    
+  }
+  
+  
   
   if (message.content.match(/Happy Birthday|𝐻𝑎𝑝𝑝𝑦 𝑏𝑖𝑟𝑡ℎ𝑑𝑎𝑦/)) {
     
@@ -25,6 +32,14 @@ export default async(message) => {
   }
   
 
+  
+  if (message.content.match(/はぴば|𝐻𝑎𝑝𝑝𝑦 𝑏𝑖𝑟𝑡ℎ𝑑𝑎𝑦/)) {
+    
+    await message.channel.send("はっぴーばーすでー");
+    
+  }
+  
+  
   
   
 };

@@ -18,20 +18,26 @@ const youtubei = new Youtubei();
 
 let postCount = 0;
 const app = express();
-app.listen(3000);
+
+// ✅ Webサーバー起動
+app.listen(3000, () => {
+  console.log("🌐 Web server is running");
+});
+
+// ✅ POSTリクエスト処理
 app.post('/', function(req, res) {
   console.log(`Received POST request.`);
-  
   postCount++;
-  if (postCount == 10) {
+  if (postCount === 10) {
     trigger();
     postCount = 0;
   }
-  
-  res.send('POST response by glitch');
-})
+  res.send('POST response by Replit');
+});
+
+// ✅ GETリクエスト（ブラウザアクセス時）
 app.get('/', function(req, res) {
-  res.send('<a href="https://note.com/exteoi/n/n0ea64e258797</a> に解説があります。');
+  res.send('GET response by Replit');
 })
 
 const client = new Client({

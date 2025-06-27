@@ -42,7 +42,35 @@ export default async(message) => {
     
   }
   
-  
+
+
+  // ✅ VCでの読み上げ機能（BOTが既にVCにいるとき）
+if (!message.author.bot && message.guild) {
+  const connection = getVoiceConnection(message.guild.id);
+  if (connection) {
+    try {
+      const url = googleTTS.getAudioUrl(message.content, {
+        lang: "ja",
+        slow: false,
+        host: "https://translate.google.com/",
+      });
+
+      const resource = createAudioResource(url);
+      const player = createAudioPlayer();
+
+      player.play(resource);
+      connection.subscribe(player);
+
+      // 読み上げ完了を待ってから接続解除してもよい（任意）
+      player.once(AudioPlayerStatus.Idle, () => {
+        // connection.destroy(); // ←ずっと接続し続けたいならコメントアウト
+      });
+
+    } catch (err) {
+      console.error("TTSエラー:", err);
+    }
+  }
+}
   
   
 };

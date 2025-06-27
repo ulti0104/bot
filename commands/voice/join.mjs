@@ -23,5 +23,5 @@ export async function execute(interaction) {
     selfDeaf: false,
   });
 
-  await interaction.reply("ボイスチャンネルに参加しました！");
+  await interaction.followUp("ボイスチャンネルに参加しました！");
 }

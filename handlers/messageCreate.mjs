@@ -32,27 +32,40 @@ export default async (message) => {
   }
 
   // ✅ 読み上げ機能
-  if (message.guild) {
-    const connection = getVoiceConnection(message.guild.id);
-    if (connection) {
-      try {
-        const url = googleTTS.getAudioUrl(message.content, {
-          lang: "ja",
-          slow: false,
-        });
-
-        const resource = createAudioResource(url);
-        const player = createAudioPlayer();
-
-        player.play(resource);
-        connection.subscribe(player);
-
-        player.once(AudioPlayerStatus.Idle, () => {
-          // connection.destroy(); // 接続維持したいなら外す
-        });
-      } catch (err) {
-        console.error("TTSエラー:", err);
-      }
-    }
+ if (message.guild) {
+  const connection = getVoiceConnection(message.guild.id);
+  if (!connection) {
+    console.log("🔇 BOTはVCに接続していません");
+    return;
   }
+
+  try {
+    console.log(`[TTS] 読み上げ対象: ${message.content}`);
+    const url = googleTTS.getAudioUrl(message.content, {
+      lang: "ja",
+      slow: false,
+    });
+
+    const resource = createAudioResource(url);
+    const player = createAudioPlayer();
+
+    player.play(resource);
+    connection.subscribe(player);
+
+    player.on(AudioPlayerStatus.Playing, () => {
+      console.log("🔊 音声再生開始");
+    });
+
+    player.on(AudioPlayerStatus.Idle, () => {
+      console.log("✅ 再生完了");
+    });
+
+    player.on("error", (error) => {
+      console.error("🎤 再生エラー:", error);
+    });
+
+  } catch (err) {
+    console.error("TTSエラー:", err);
+  }
+}
 };

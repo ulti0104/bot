@@ -11,7 +11,7 @@ export async function execute(interaction) {
 
   if (!channel) {
     return interaction.reply({
-      content: "先にVCに参加してください。",
+      content: "先にボイスチャンネルに参加してください。",
       ephemeral: true,
     });
   }
@@ -23,9 +23,5 @@ export async function execute(interaction) {
     selfDeaf: false,
   });
 
-  await interaction.reply("VCに参加しました！");
+  await interaction.reply("ボイスチャンネルに参加しました！");
 }
-﻿
-みみさぶ
-ulti.14.sub
- 

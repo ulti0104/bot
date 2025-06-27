@@ -5,6 +5,7 @@
   "main": "main.mjs",
   "scripts": {
     "start": "node main.mjs"
+    "postinstall": "npm install discord.js @discordjs/voice google-tts-api"
   },
   "dependencies": {
     "discord.js": "^14.14.1",
@@ -14,7 +15,9 @@
     "express": "^4.19.2",
     "rss-parser": "^3.13.0",
     "@gonetone/get-youtube-id-by-url": "^1.0.1",
-    "youtubei": "^1.4.1"
+    "youtubei": "^1.4.1",
+    "@discordjs/voice": "^0.14.0",
+    "google-tts-api": "^2.0.1"
   },
   "engines": {
     "node": "16.x"

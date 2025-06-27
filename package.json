@@ -4,7 +4,7 @@
   "description": "MiniPotato Bot by EOi",
   "main": "main.mjs",
   "scripts": {
-    "start": "node main.mjs"
+    "start": "node main.mjs",
     "postinstall": "npm install discord.js @discordjs/voice google-tts-api"
   },
   "dependencies": {

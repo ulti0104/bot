@@ -1,3 +1,6 @@
+import { getVoiceConnection, joinVoiceChannel, createAudioPlayer, createAudioResource, AudioPlayerStatus } from "@discordjs/voice";
+import googleTTS from "google-tts-api";
+
 export default async(message) => {
   if (message.content.match(/年|月/)) {
     

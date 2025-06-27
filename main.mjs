@@ -82,9 +82,9 @@ client.on("interactionCreate", async (interaction) => {
   await handlers.get("interactionCreate").default(interaction);
 });
 
-client.on("voiceStateUpdate", async (oldState, newState) => {
-  await handlers.get("voiceStateUpdate").default(oldState, newState);
-});
+//client.on("voiceStateUpdate", async (oldState, newState) => {
+//  await handlers.get("voiceStateUpdate").default(oldState, newState);
+//});
 
 client.on("messageCreate", async (message) => {
   

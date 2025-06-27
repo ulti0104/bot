@@ -1,7 +1,7 @@
 export default async (interaction) => {
   if (!interaction.isCommand()) return;
 
-  await interaction.deferReply(); // 
+  
 
   const command = interaction.client.commands.get(interaction.commandName);
   if (!command) {

@@ -48,18 +48,12 @@ var todayString6 = now.getFullYear() + '年' + (now.getMonth() + 1) + '月' + no
 
 export async function execute(interaction){
 	await interaction.channel.send(todayString);
-  await interaction.channel.send(todayString1);
-
-  await interaction.channel.send(todayString2);
-  await interaction.channel.send(todayString3);
-  await interaction.channel.send(todayString4);
-  await interaction.channel.send(todayString5);
-  await interaction.channel.send(todayString6);
-
-		await sentMessage.react("⭕");
-  	await sentMessage.react("❌");
-  	await sentMessage.react("🔺");
-  	await sentMessage.react("❓");
+  	await interaction.channel.send(todayString1);
+  	await interaction.channel.send(todayString2);
+	await interaction.channel.send(todayString3);
+	await interaction.channel.send(todayString4);
+  	await interaction.channel.send(todayString5);
+	await interaction.channel.send(todayString6);
 	
   await interaction.channel.send('@everyone \n交流戦日程⭕❌してほしいでありんす');
 

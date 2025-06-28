@@ -11,8 +11,9 @@ import googleTTS from "google-tts-api";
 const player = createAudioPlayer();
 const queue = [];
 let isPlaying = false;
+const watchedGuilds = new Set();
 
-// プレイヤーがアイドル状態になったら次の音声へ
+// 再生完了時に次の音声へ
 player.on(AudioPlayerStatus.Idle, () => {
   if (queue.length > 0) {
     const next = queue.shift();
@@ -60,21 +61,30 @@ export default async (message) => {
     return;
   }
 
-  // 自動再接続のための監視
-  connection.on("stateChange", (oldState, newState) => {
-    if (
-      oldState.status !== VoiceConnectionStatus.Ready &&
-      newState.status === VoiceConnectionStatus.Ready
-    ) {
-      console.log("✅ 再接続成功");
-      connection.subscribe(player);
-    }
+  // connection.subscribe は Ready 状態でのみ呼ぶ
+  if (connection.state.status === VoiceConnectionStatus.Ready) {
+    connection.subscribe(player);
+  }
 
-    if (newState.status === VoiceConnectionStatus.Disconnected) {
-      console.log("⚠️ VCから切断されました。再接続を試みます");
-      tryReconnect(connection);
-    }
-  });
+  // イベント登録は1回のみ
+  if (!watchedGuilds.has(message.guild.id)) {
+    watchedGuilds.add(message.guild.id);
+
+    connection.on("stateChange", (oldState, newState) => {
+      if (
+        oldState.status !== VoiceConnectionStatus.Ready &&
+        newState.status === VoiceConnectionStatus.Ready
+      ) {
+        console.log("✅ 再接続成功");
+        connection.subscribe(player);
+      }
+
+      if (newState.status === VoiceConnectionStatus.Disconnected) {
+        console.log("⚠️ VCから切断されました。再接続を試みます");
+        tryReconnect(connection);
+      }
+    });
+  }
 
   if (connection.state.status !== VoiceConnectionStatus.Ready) {
     console.log("🕒 BOTは準備中です");
@@ -90,7 +100,6 @@ export default async (message) => {
     });
 
     const resource = createAudioResource(url);
-    connection.subscribe(player);
 
     if (!isPlaying) {
       isPlaying = true;
@@ -98,13 +107,11 @@ export default async (message) => {
     } else {
       queue.push(resource);
     }
-
   } catch (err) {
     console.error("TTSエラー:", err);
   }
 };
 
-// 再接続ロジック
 function tryReconnect(connection) {
   let retries = 0;
   const maxRetries = 3;
@@ -113,6 +120,7 @@ function tryReconnect(connection) {
     if (connection.state.status === VoiceConnectionStatus.Ready) {
       clearInterval(interval);
       console.log("🔁 再接続成功");
+      connection.subscribe(player);
       return;
     }
 

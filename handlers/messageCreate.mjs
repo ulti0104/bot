@@ -49,7 +49,7 @@ export default async (message) => {
       console.log(`[TTS] 読み上げ対象: ${message.content}`);
       const url = googleTTS.getAudioUrl(message.content, {
         lang: "ja",
-        speed: 1.2,
+        speed: 1.5,
       });
 
       const resource = createAudioResource(url);

@@ -4,13 +4,55 @@ import {
   createAudioResource,
   AudioPlayerStatus,
   VoiceConnectionStatus,
+  entersState,
 } from "@discordjs/voice";
 import googleTTS from "google-tts-api";
+
+// 読み上げキュー
+const ttsQueue = [];
+let isPlaying = false;
+
+const player = createAudioPlayer();
+
+player.on(AudioPlayerStatus.Idle, () => {
+  console.log("✅ 再生完了");
+  isPlaying = false;
+  playNext(); // 次の音声を再生
+});
+
+player.on("error", (error) => {
+  console.error("🎤 再生エラー:", error);
+  isPlaying = false;
+  playNext(); // エラーでも次へ
+});
+
+// 読み上げ実行関数
+async function playNext() {
+  if (isPlaying || ttsQueue.length === 0) return;
+
+  const { text, connection } = ttsQueue.shift();
+  isPlaying = true;
+
+  try {
+    const url = googleTTS.getAudioUrl(text, {
+      lang: "ja",
+      speed: 1.8,
+    });
+    const resource = createAudioResource(url);
+    connection.subscribe(player);
+    player.play(resource);
+    console.log(`🔊 再生中: ${text}`);
+  } catch (err) {
+    console.error("TTS再生エラー:", err);
+    isPlaying = false;
+    playNext();
+  }
+}
 
 export default async (message) => {
   if (message.author.bot) return;
 
-  // 🎉 絵文字反応
+  // 🎉 絵文字反応（省略せず全部使ってOK）
   if (message.content.match(/年|月/)) {
     await message.react("⭕");
     await message.react("❌");
@@ -36,7 +78,6 @@ export default async (message) => {
   if (message.guild) {
     const connection = getVoiceConnection(message.guild.id);
 
-    // 🔒 BOTがVCに参加していなければ何もしない
     if (
       !connection ||
       connection.state.status !== VoiceConnectionStatus.Ready
@@ -45,32 +86,9 @@ export default async (message) => {
       return;
     }
 
-    try {
-      console.log(`[TTS] 読み上げ対象: ${message.content}`);
-      const url = googleTTS.getAudioUrl(message.content, {
-        lang: "ja",
-        speed: 1.8,
-      });
-
-      const resource = createAudioResource(url);
-      const player = createAudioPlayer();
-
-      player.play(resource);
-      connection.subscribe(player);
-
-      player.on(AudioPlayerStatus.Playing, () => {
-        console.log("🔊 音声再生開始");
-      });
-
-      player.on(AudioPlayerStatus.Idle, () => {
-        console.log("✅ 再生完了");
-      });
-
-      player.on("error", (error) => {
-        console.error("🎤 再生エラー:", error);
-      });
-    } catch (err) {
-      console.error("TTSエラー:", err);
-    }
+    // キューに追加
+    ttsQueue.push({ text: message.content, connection });
+    console.log(`[🔃 Queue追加] ${message.content}`);
+    playNext();
   }
 };

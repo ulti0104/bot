@@ -4,12 +4,27 @@ import {
   createAudioResource,
   AudioPlayerStatus,
   VoiceConnectionStatus,
-  entersState,
 } from "@discordjs/voice";
 import googleTTS from "google-tts-api";
 
-const ttsQueue = [];
+// グローバルに AudioPlayer を1つだけ使い回す
+const player = createAudioPlayer();
+const queue = [];
 let isPlaying = false;
+
+// プレイヤーがアイドル状態になったら次の音声へ
+player.on(AudioPlayerStatus.Idle, () => {
+  if (queue.length > 0) {
+    const next = queue.shift();
+    player.play(next);
+  } else {
+    isPlaying = false;
+  }
+});
+
+player.on("error", (error) => {
+  console.error("🎤 再生エラー:", error);
+});
 
 export default async (message) => {
   if (message.author.bot) return;
@@ -36,67 +51,76 @@ export default async (message) => {
     await message.channel.send("はっぴーばーすでー");
   }
 
-  // 🔊 読み上げ機能
-  if (message.guild) {
-    const connection = getVoiceConnection(message.guild.id);
+  if (!message.guild) return;
 
-    if (!connection) {
-      console.log("🔇 BOTはVCに未接続");
-      return;
-    }
+  const connection = getVoiceConnection(message.guild.id);
 
-    try {
-      await entersState(connection, VoiceConnectionStatus.Ready, 5_000);
-    } catch (error) {
-      console.log("⚠️ VC準備未完了:", error);
-      return;
-    }
-
-    ttsQueue.push({
-      text: message.content,
-      connection,
-    });
-
-    if (!isPlaying) playNext();
+  if (!connection) {
+    console.log("🔇 BOTはVCに未接続");
+    return;
   }
-};
 
-async function playNext() {
-  if (isPlaying || ttsQueue.length === 0) return;
+  // 自動再接続のための監視
+  connection.on("stateChange", (oldState, newState) => {
+    if (
+      oldState.status !== VoiceConnectionStatus.Ready &&
+      newState.status === VoiceConnectionStatus.Ready
+    ) {
+      console.log("✅ 再接続成功");
+      connection.subscribe(player);
+    }
 
-  const { text, connection } = ttsQueue.shift();
-  isPlaying = true;
+    if (newState.status === VoiceConnectionStatus.Disconnected) {
+      console.log("⚠️ VCから切断されました。再接続を試みます");
+      tryReconnect(connection);
+    }
+  });
+
+  if (connection.state.status !== VoiceConnectionStatus.Ready) {
+    console.log("🕒 BOTは準備中です");
+    return;
+  }
 
   try {
-    console.log(`[TTS] 再生: ${text}`);
-    const url = googleTTS.getAudioUrl(text, {
+    console.log(`[TTS] 読み上げ対象: ${message.content}`);
+
+    const url = googleTTS.getAudioUrl(message.content, {
       lang: "ja",
       speed: 1.8,
     });
-    const resource = createAudioResource(url);
-    const player = createAudioPlayer();
 
-    player.play(resource);
+    const resource = createAudioResource(url);
     connection.subscribe(player);
 
-    player.once(AudioPlayerStatus.Playing, () => {
-      console.log("🔊 再生開始");
-    });
+    if (!isPlaying) {
+      isPlaying = true;
+      player.play(resource);
+    } else {
+      queue.push(resource);
+    }
 
-    player.once(AudioPlayerStatus.Idle, () => {
-      console.log("✅ 再生完了");
-      isPlaying = false;
-      playNext();
-    });
-
-    player.once("error", (err) => {
-      console.error("🎤 再生エラー:", err);
-      isPlaying = false;
-      playNext();
-    });
   } catch (err) {
-    console.error("TTS処理エラー:", err);
-    isPlaying = false;
-    playNext();
+    console.error("TTSエラー:", err);
   }
+};
+
+// 再接続ロジック
+function tryReconnect(connection) {
+  let retries = 0;
+  const maxRetries = 3;
+
+  const interval = setInterval(() => {
+    if (connection.state.status === VoiceConnectionStatus.Ready) {
+      clearInterval(interval);
+      console.log("🔁 再接続成功");
+      return;
+    }
+
+    retries++;
+    if (retries > maxRetries) {
+      console.log("❌ 再接続失敗。切断します。");
+      connection.destroy();
+      clearInterval(interval);
+    }
+  }, 3000);
 }

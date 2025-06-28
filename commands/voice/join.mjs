@@ -11,31 +11,38 @@ export async function execute(interaction) {
 
   if (!channel) {
     return interaction.reply({
-      content: "❌ 先にボイスチャンネルに参加してください。",
+      content: "❗️先にボイスチャンネルに参加してください。",
       ephemeral: true,
     });
   }
 
   try {
-  // すでに VC に接続
-  joinVoiceChannel({...});
-
-  // 1回だけ reply
-  await interaction.reply("✅ ボイスチャンネルに参加しました！");
-} catch (error) {
-  console.error("VC参加エラー:", error);
-
-  // すでに reply したか確認
-  if (interaction.replied || interaction.deferred) {
-    await interaction.followUp({
-      content: "⚠️ ボイスチャンネルへの参加に失敗しました。",
-      ephemeral: true,
+    joinVoiceChannel({
+      channelId: channel.id,
+      guildId: channel.guild.id,
+      adapterCreator: channel.guild.voiceAdapterCreator,
+      selfDeaf: false,
     });
-  } else {
-    await interaction.reply({
-      content: "⚠️ ボイスチャンネルへの参加に失敗しました。",
-      ephemeral: true,
-    });
+
+    if (interaction.replied  interaction.deferred) {
+      await interaction.followUp("✅ ボイスチャンネルに参加しました！");
+    } else {
+      await interaction.reply("✅ ボイスチャンネルに参加しました！");
+    }
+
+  } catch (error) {
+    console.error("❌ VC参加エラー:", error);
+
+    if (interaction.replied  interaction.deferred) {
+      await interaction.followUp({
+        content: "⚠️ ボイスチャンネルへの参加に失敗しました。",
+        ephemeral: true,
+      });
+    } else {
+      await interaction.reply({
+        content: "⚠️ ボイスチャンネルへの参加に失敗しました。",
+        ephemeral: true,
+      });
+    }
   }
-}
 }

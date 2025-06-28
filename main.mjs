@@ -78,6 +78,12 @@ for (const file of handlerFiles) {
   });
 }
 
+client.on("voiceStateUpdate", (oldState, newState) => {
+  import("./handlers/voiceStateUpdate.mjs").then((module) =>
+    module.default(oldState, newState)
+  );
+});
+
 // ✅ イベント登録
 client.on("interactionCreate", async (interaction) => {
   await handlers.get("interactionCreate")?.default?.(interaction);

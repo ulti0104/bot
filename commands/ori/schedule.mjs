@@ -27,5 +27,5 @@ export async function execute(interaction) {
     await sentMessage.react("❓");
   }
 
-  await interaction.channel.send('@everyone n交流戦日程⭕❌してほしいでありんす');
+  await interaction.channel.send('@everyone \n交流戦日程⭕❌してほしいでありんす');
 }

@@ -23,7 +23,7 @@ export default async (message) => {
   }
 
   if (message.content.match(/足臭|あしくさ/)) {
-    await message.reply("じょ！");
+    await message.reply("じょ！この方です→<@1111272843603349534>");
   }
 
   if (

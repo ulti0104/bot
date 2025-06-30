@@ -1,15 +1,15 @@
 import { SlashCommandBuilder } from 'discord.js';
 
 export const data = new SlashCommandBuilder()
-  .setName('remove-reactions')
-  .setDescription('直近のメッセージからBOTのリアクションを削除します');
+  .setName('delete-react')
+  .setDescription('うるティのリアクションを削除');
 
 export async function execute(interaction) {
   const channel = interaction.channel;
 
   try {
     // メッセージを直近10件取得
-    const messages = await channel.messages.fetch({ limit: 10 });
+    const messages = await channel.messages.fetch({ limit: 20 });
 
     // BOTのリアクションのみ削除
     for (const [, message] of messages) {

@@ -1,42 +1,24 @@
+// main.mjs
 import fs from "fs";
 import path from "path";
 import express from "express";
-import { Client, Collection, GatewayIntentBits, ActivityType, EmbedBuilder } from "discord.js";
-import CommandsRegister from "./regist-commands.mjs";
-import Notification from "./models/notification.mjs";
-import YoutubeFeeds from "./models/youtubeFeeds.mjs";
-import YoutubeNotifications from "./models/youtubeNotifications.mjs";
-import Sequelize from "sequelize";
-import Parser from 'rss-parser';
-import { Client as Youtubei } from "youtubei";
-import sodium from "libsodium-wrappers";
+import {
+  Client,
+  Collection,
+  GatewayIntentBits,
+  ActivityType,
+  EmbedBuilder,
+} from "discord.js";
 import { getVoiceConnection, VoiceConnectionStatus } from "@discordjs/voice";
+import CommandsRegister from "./regist-commands.mjs";
 
-await sodium.ready;
-
-const parser = new Parser();
-const youtubei = new Youtubei();
-let postCount = 0;
-
+// ✅ Webサーバー起動（Render用）
 const app = express();
-
 app.listen(3000, () => {
   console.log("🌐 Web server is running");
 });
-
-app.post('/', function (req, res) {
-  console.log(`Received POST request.`);
-  postCount++;
-  if (postCount === 10) {
-    trigger();
-    postCount = 0;
-  }
-  res.send('POST response by Render');
-});
-
-app.get('/', function (req, res) {
-  res.send('GET response by Render');
-});
+app.get("/", (_, res) => res.send("GET response by Render"));
+app.post("/", (_, res) => res.send("POST response by Render"));
 
 const client = new Client({
   intents: [
@@ -50,154 +32,88 @@ const client = new Client({
 client.commands = new Collection();
 
 // ✅ コマンド読み込み
-const categoryFoldersPath = path.join(process.cwd(), "commands");
-const commandFolders = fs.readdirSync(categoryFoldersPath);
-for (const folder of commandFolders) {
-  const commandsPath = path.join(categoryFoldersPath, folder);
-  const commandFiles = fs.readdirSync(commandsPath).filter((file) => file.endsWith(".mjs"));
-  for (const file of commandFiles) {
-    const filePath = path.join(commandsPath, file);
-    import(filePath).then((module) => {
-      client.commands.set(module.data.name, module);
-    });
+const commandPath = path.join(process.cwd(), "commands");
+for (const folder of fs.readdirSync(commandPath)) {
+  const files = fs
+    .readdirSync(path.join(commandPath, folder))
+    .filter((f) => f.endsWith(".mjs"));
+
+  for (const file of files) {
+    const filePath = path.join(commandPath, folder, file);
+    const module = await import(filePath);
+    client.commands.set(module.data.name, module);
   }
 }
 
-// ✅ ハンドラー読み込み
+// ✅ ハンドラ読み込み
 const handlers = new Map();
-const handlersPath = path.join(process.cwd(), "handlers");
-const handlerFiles = fs.readdirSync(handlersPath).filter((file) => file.endsWith(".mjs"));
+const handlerPath = path.join(process.cwd(), "handlers");
+const handlerFiles = fs.readdirSync(handlerPath).filter((f) => f.endsWith(".mjs"));
 for (const file of handlerFiles) {
-  const filePath = path.join(handlersPath, file);
-  import(filePath).then((module) => {
-    handlers.set(file.slice(0, -4), module);
-  });
+  const module = await import(path.join(handlerPath, file));
+  handlers.set(file.replace(".mjs", ""), module);
 }
 
-// ✅ イベント登録
-client.on("interactionCreate", async (interaction) => {
-  await handlers.get("interactionCreate")?.default?.(interaction);
-});
+// ✅ 自動再接続監視
+function monitorVoiceConnection(guildId) {
+  const connection = getVoiceConnection(guildId);
+  if (!connection) return;
 
-client.on("voiceStateUpdate", async (oldState, newState) => {
-  await handlers.get("voiceStateUpdate")?.default?.(oldState, newState);
+  connection.on("stateChange", (oldState, newState) => {
+    console.log(`🎙 VC状態変化: ${oldState.status} → ${newState.status}`);
 
-  // ✅ 自動再接続監視
-  const connection = getVoiceConnection(oldState.guild.id);
-  if (connection) {
-    connection.on("stateChange", (oldState, newState) => {
-      if (newState.status === VoiceConnectionStatus.Disconnected) {
-        console.log("⚠️ BOTがVCから切断されました。再接続を試みます。");
-        tryReconnect(connection);
-      }
-    });
-  }
-});
-
-client.on("messageCreate", async (message) => {
-  await handlers.get("messageCreate")?.default?.(message);
-});
-
-client.on("ready", async () => {
-  await client.user.setActivity('🥔', {
-    type: ActivityType.Custom,
-    state: "ツイストポテトを堪能中"
-  });
-  console.log(`${client.user.tag} がログインしました！`);
-});
-
-// ✅ DBの同期
-Notification.sync({ alter: true });
-YoutubeFeeds.sync({ alter: true });
-YoutubeNotifications.sync({ alter: true });
-
-// ✅ コマンド登録
-CommandsRegister();
-
-// ✅ ログイン
-client.login(process.env.TOKEN);
-
-// ✅ YouTube通知のトリガー処理
-async function trigger() {
-  const youtubeNofications = await YoutubeNotifications.findAll({
-    attributes: [
-      [Sequelize.fn('DISTINCT', Sequelize.col('channelFeedUrl')), 'channelFeedUrl'],
-    ]
-  });
-
-  await Promise.all(
-    youtubeNofications.map(async n => {
-      checkFeed(n.channelFeedUrl);
-    })
-  );
-}
-
-// ✅ RSSチェック
-async function checkFeed(channelFeedUrl) {
-  const youtubeFeed = await YoutubeFeeds.findOne({
-    where: { channelFeedUrl },
-  });
-
-  const checkedDate = new Date(youtubeFeed.channelLatestUpdateDate);
-  let latestDate = new Date(youtubeFeed.channelLatestUpdateDate);
-
-  const feed = await parser.parseURL(channelFeedUrl);
-  const videos = feed.items.map(i => {
-    const now = new Date(i.isoDate);
-    if (now > checkedDate) {
-      if (now > latestDate) latestDate = now;
-      return i;
+    if (newState.status === VoiceConnectionStatus.Disconnected) {
+      console.warn("⚠️ VC切断検知、自動再接続試行中…");
+      tryReconnect(connection);
     }
   });
-
-  const notifications = await YoutubeNotifications.findAll({
-    where: { channelFeedUrl },
-  });
-
-  const youtubeChannelId = channelFeedUrl.split('=').at(1);
-
-  for (const v of videos) {
-    if (!v) continue;
-    const youtubeVideolId = v.link.split('=').at(1);
-    const youtubeVideo = await youtubei.getVideo(youtubeVideolId);
-
-    const embed = new EmbedBuilder()
-      .setColor(0xcd201f)
-      .setAuthor({ name: v.author, url: `https://www.youtube.com/channel/${youtubeChannelId}` })
-      .setTitle(v.title)
-      .setURL(v.link)
-      .setDescription(youtubeVideo.description)
-      .setImage(youtubeVideo.thumbnails.best)
-      .setTimestamp(new Date(v.isoDate));
-
-    notifications.forEach(n => {
-      const channel = client.channels.cache.get(n.textChannelId);
-      channel?.send({ embeds: [embed] });
-    });
-  }
-
-  await YoutubeFeeds.update(
-    { channelLatestUpdateDate: latestDate.toISOString() },
-    { where: { channelFeedUrl } }
-  );
 }
 
-// ✅ 再接続関数
 function tryReconnect(connection) {
   let retries = 0;
   const maxRetries = 3;
 
   const interval = setInterval(() => {
-    if (connection.state.status === VoiceConnectionStatus.Ready) {
-      console.log("🔁 再接続成功");
+    const status = connection.state.status;
+    console.log(`🔁 再接続試行中…現在の状態: ${status}`);
+
+    if (status === VoiceConnectionStatus.Ready) {
+      console.log("✅ 再接続成功");
       clearInterval(interval);
-    } else {
-      retries++;
-      if (retries > maxRetries) {
-        console.log("❌ 再接続失敗。切断します。");
-        connection.destroy();
-        clearInterval(interval);
-      }
+      return;
+    }
+
+    retries++;
+    if (retries >= maxRetries) {
+      console.error("❌ 再接続失敗、切断します");
+      connection.destroy();
+      clearInterval(interval);
     }
   }, 3000);
 }
+
+// ✅ イベント
+client.on("ready", () => {
+  client.user.setActivity("ツイストポテトを堪能中", { type: ActivityType.Custom });
+  console.log(`✅ ${client.user.tag} がログインしました`);
+});
+
+// ✅ interaction handler
+client.on("interactionCreate", async (interaction) => {
+  await handlers.get("interactionCreate")?.default?.(interaction);
+});
+
+// ✅ voiceStateUpdate handler + 再接続監視
+client.on("voiceStateUpdate", async (oldState, newState) => {
+  await handlers.get("voiceStateUpdate")?.default?.(oldState, newState);
+  monitorVoiceConnection(newState.guild.id);
+});
+
+// ✅ messageCreate handler
+client.on("messageCreate", async (message) => {
+  await handlers.get("messageCreate")?.default?.(message);
+});
+
+// ✅ コマンド登録 & ログイン
+CommandsRegister();
+client.login(process.env.TOKEN);

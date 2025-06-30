@@ -91,7 +91,37 @@ client.on("interactionCreate", async (interaction) => {
 
 client.on("voiceStateUpdate", async (oldState, newState) => {
   await handlers.get("voiceStateUpdate")?.default?.(oldState, newState);
+
+  // 自動再接続の監視（追加ロジック）
+  const connection = getVoiceConnection(oldState.guild.id);
+  if (connection) {
+    connection.on("stateChange", (oldState, newState) => {
+      if (newState.status === "disconnected") {
+        console.log("⚠️ 切断されました。再接続を試みます...");
+        tryReconnect(connection);
+      }
+    });
+  }
 });
+
+// 再接続ロジック
+function tryReconnect(connection) {
+  let retries = 0;
+  const maxRetries = 3;
+  const interval = setInterval(() => {
+    if (connection.state.status === "ready") {
+      console.log("🔁 再接続成功");
+      clearInterval(interval);
+    } else {
+      retries++;
+      if (retries > maxRetries) {
+        console.log("❌ 再接続失敗。切断します");
+        connection.destroy();
+        clearInterval(interval);
+      }
+    }
+  }, 3000);
+}
 
 client.on("messageCreate", async (message) => {
   await handlers.get("messageCreate")?.default?.(message);

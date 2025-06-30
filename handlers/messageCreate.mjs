@@ -57,17 +57,31 @@ export default async (message) => {
     return;
   }
 
-  if (connection.state.status !== VoiceConnectionStatus.Ready) {
-    console.log("🕒 BOTは準備中です");
+  // ✅ VC接続状態のチェックと再接続処理
+  const status = connection.state.status;
+  if (
+    status === VoiceConnectionStatus.Disconnected ||
+    status === VoiceConnectionStatus.Destroyed
+  ) {
+    console.log("🛑 接続が切れています");
+    connection.destroy();
     return;
   }
 
-  connection.subscribe(player); // 念のため再登録
+  if (
+    status === VoiceConnectionStatus.Connecting ||
+    status === VoiceConnectionStatus.Signalling
+  ) {
+    console.log("🕒 BOTが接続準備中です。再接続を待機");
+    await waitForReady(connection);
+  }
+
+  connection.subscribe(player); // 再接続後の再登録
 
   try {
     const url = googleTTS.getAudioUrl(message.content, {
       lang: "ja",
-      speed: 1.6, // お好みで速度調整
+      speed: 1.6,
     });
     const resource = createAudioResource(url);
 
@@ -81,3 +95,25 @@ export default async (message) => {
     console.error("TTSエラー:", err);
   }
 };
+
+// ✅ Readyになるまで待機（最大5秒）
+function waitForReady(connection, timeoutMs = 5000) {
+  return new Promise((resolve, reject) => {
+    const status = connection.state.status;
+    if (status === VoiceConnectionStatus.Ready) return resolve();
+
+    const timeout = setTimeout(() => {
+      reject(new Error("VC準備がタイムアウトしました"));
+    }, timeoutMs);
+
+    const handler = (_, newState) => {
+      if (newState.status === VoiceConnectionStatus.Ready) {
+        clearTimeout(timeout);
+        connection.off("stateChange", handler);
+        resolve();
+      }
+    };
+
+    connection.on("stateChange", handler);
+  });
+}

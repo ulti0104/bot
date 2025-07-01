@@ -30,38 +30,52 @@ const battleActions = [
   '{A} の足元が滑るが、すぐに立て直す！',
   '{B} の攻撃がヒット！',
   '地面が揺れるほどの一撃が炸裂！',
+  '突然、観客席から声援が飛ぶ📣！',
   '{A} は叫ぶ「覚悟しろぉぉ！」',
   '{B} の武器が…壊れた！？',
 ];
 
-function generateBattleActions(a, b, count = 4) {
-  return [...battleActions]
+const generateBattleActions = (a, b, count = 4) =>
+  [...battleActions]
     .sort(() => 0.5 - Math.random())
     .slice(0, count)
     .map(t => t.replace(/{A}/g, a).replace(/{B}/g, b));
-}
 
-const cheeringTemplates = [
-  `すごいぞ！信じてるぞ！`,
-  `がんばれー！逆転のチャンスだ！`,
-  `その攻撃、かっこよすぎ！`,
-  `いけぇぇぇ！決めてくれ！！`,
-  `こんなバトル、見たことない！`,
-  `これは伝説になるぞ！！`,
-  `勝利は目の前だ！集中！`,
-  `もう目が離せない！`,
-  `燃えてきたぁぁぁ🔥🔥🔥`,
-  `ギャーー！！最高！！`,
-  `今の見た！？やばすぎ！`,
-  `実況つけて！誰か実況して！`,
-  `勝ったら奢ってね！？`,
-  `この試合…映画化決定でしょ！？`,
-  `もう誰にも止められない！！`,
-];
+const generateCheeringMessages = (a, b) => {
+  const cheeringTemplates = [
+    `📣 ${a}〜！ここが正念場だぞ〜！`,
+    `👊 ${b}なんて蹴散らしちゃえ！ ${a}のターン！`,
+    `😤 ${a}、まだ本気出してないよね？`,
+    `🔥 ${a}ならやれる！信じてるぞ！！`,
+    `😂 ${b}〜今のミス、全世界に配信されてるぞ〜！？`,
+    `🫡 勝利の味は${a}だけのものだ！`,
+    `💀 ${b}、覚悟はできてるよな？`,
+    `✨ ${a}の必殺技が光り輝く瞬間を見逃すな！`,
+    `🫨 ${b}が強すぎる！？いや、${a}が巻き返すはず！`,
+    `🍖 ${a}が勝ったら焼肉おごりって言ったよね！？`,
+    `📺 ただいま${a} vs ${b}の頂上決戦をお送りしております`,
+    `🍿 ${a}〜！さっきの攻撃、観客席から見ても完璧だったよ！`,
+    `🚑 ${b}…負けても救急車は手配済みだってさ`,
+    `🐸 ${a}にカエルバフ付与！ぴょんぴょん勝て！`,
+    `📦 ${b}には謎のダンボールを贈呈しておきます`,
+    `💃 ${a}！この戦い、ダンスバトルでも勝てるぞ！？`,
+    `🎉 ${a}のファン10万人が応援中！！`,
+    `⚖️ え？審判買収したの誰？（もちろん${a}の勝利です）`,
+    `🤖 ${b}、残念ながらスクリプトエラーです。${a}の勝利！`,
+    `🪐 ${a}の攻撃が宇宙に届いた！？`,
+    `⛩️ 勝利の神が微笑んでいる…${a}に！`,
+    `💸 ${b}、勝てたら100万ジンバブエドル進呈`,
+    `📕 教科書にも載るぞ、この戦い。がんばれ${a}！`,
+    `🪖 ${a}、ここで決めるんだ！伝説を作れ！`,
+    `📢 ${b}ーッ！今のはやられたふりだよな！？…え？マジ？`,
+  ];
+  return cheeringTemplates.sort(() => 0.5 - Math.random()).slice(0, 4);
+};
 
 export async function execute(interaction) {
   const user = interaction.user;
   const opponent = interaction.options.getUser('opponent');
+
   if (opponent.bot) return interaction.reply("🤖 ボットとは戦えません！");
   if (user.id === opponent.id) return interaction.reply("😅 自分自身とは戦えません！");
 
@@ -88,21 +102,14 @@ export async function execute(interaction) {
     await interaction.followUp(act);
   }
 
-  // 観客コメント：対戦者以外のランダムユーザー名 + ランダムセリフ
-  const allMembers = await interaction.guild.members.fetch();
-  const spectators = allMembers.filter(m => !m.user.bot && m.id !== user.id && m.id !== opponent.id);
-  const selectedSpectators = [...spectators.values()]
-    .sort(() => 0.5 - Math.random())
-    .slice(0, 4);
-
-  for (const spectator of selectedSpectators) {
-    const cheer = cheeringTemplates[Math.floor(Math.random() * cheeringTemplates.length)];
-    const spectatorName = spectator.displayName;
-    await new Promise(r => setTimeout(r, 800 + Math.random() * 400));
-    await interaction.followUp(`👥 **${spectatorName}**「${cheer}」`);
+  const cheers = generateCheeringMessages(userName, opponentName);
+  for (const cheer of cheers) {
+    await new Promise(r => setTimeout(r, 800 + Math.random() * 500));
+    await interaction.followUp(`👥 観客: ${cheer}`);
   }
 
   const winner = Math.random() < 0.5 ? userName : opponentName;
+
   await new Promise(r => setTimeout(r, 1500));
   await interaction.followUp(`🏆 **${winner}** の勝利！ 🎉`);
 }

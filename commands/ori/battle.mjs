@@ -2,10 +2,10 @@ import { SlashCommandBuilder } from 'discord.js';
 
 export const data = new SlashCommandBuilder()
   .setName('battle')
-  .setDescription('指定した相手とバトルを開始！')
+  .setDescription('指定した相手とバトル')
   .addUserOption(option =>
     option.setName('opponent')
-      .setDescription('対戦相手を選んでください')
+      .setDescription('対戦相手を選択')
       .setRequired(true)
   );
 
@@ -26,13 +26,6 @@ export async function execute(interaction) {
   const user = interaction.user;
   const opponent = interaction.options.getUser('opponent');
 
-  // ギルドメンバーとして取得（ニックネーム含む表示名を使うため）
-  const member = await interaction.guild.members.fetch(user.id);
-  const opponentMember = await interaction.guild.members.fetch(opponent.id);
-
-  const userName = member.displayName;
-  const opponentName = opponentMember.displayName;
-
   if (opponent.bot) {
     return await interaction.reply("ボットとは戦えません！");
   }
@@ -40,6 +33,12 @@ export async function execute(interaction) {
   if (user.id === opponent.id) {
     return await interaction.reply("自分自身とは戦えません！");
   }
+
+  const member = await interaction.guild.members.fetch(user.id);
+  const opponentMember = await interaction.guild.members.fetch(opponent.id);
+
+  const userName = member.displayName;
+  const opponentName = opponentMember.displayName;
 
   const userWeapon = weapons[Math.floor(Math.random() * weapons.length)];
   const opponentWeapon = weapons[Math.floor(Math.random() * weapons.length)];

@@ -5,7 +5,7 @@
   "main": "main.mjs",
   "scripts": {
     "start": "node main.mjs",
-    "postinstall": "npm install discord.js @discordjs/voice google-tts-api libsodium-wrappers"
+    "postinstall": "npm install discord.js @discordjs/voice google-tts-api libsodium-wrappers @napi-rs/canvas"
   },
   "dependencies": {
     "discord.js": "^14.14.1",
@@ -18,7 +18,8 @@
     "youtubei": "^1.4.1",
     "@discordjs/voice": "^0.14.0",
     "google-tts-api": "^2.0.1",
-    "libsodium-wrappers": "^0.7.11"
+    "libsodium-wrappers": "^0.7.11",
+    "@napi-rs/canvas": "^0.1.50"
   },
   "engines": {
     "node": ">=18.0.0"

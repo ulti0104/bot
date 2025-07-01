@@ -74,7 +74,7 @@ export async function execute(interaction) {
   const actions = [
     `${userName} の一撃！ ${opponentName} は華麗に回避！`,
     `${opponentName} の反撃！`,
-    `武器がぶつかり合い sparks が飛び散る！`,
+    `武器がぶつかり合う💥💥`,
     `観客が盛り上がる…！！`,
   ];
   for (const act of actions) {
